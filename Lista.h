@@ -33,8 +33,24 @@ public:
     Lista(const Lista& otra)
     {
         std::cout << "Constructor de copia\n";
+        this->cab = 0;
+        Nodo<TipoGen> *aux = otra.cab;
+        Nodo<TipoGen> *ult = 0;
+        while (aux != 0)    {
+            Nodo<TipoGen> *nuevo = new Nodo<TipoGen>(aux->dato);
+            if (this->cab == 0)  {
+                this->cab = nuevo;
+                ult = nuevo;
+            }
+            else    {
+                ult->sig = nuevo;
+                ult = nuevo;
+            }
+            aux = aux->sig;
+        }
     }
     
+    // TAREA: sobrecargar el operador de asignación (operator=)
     
     ~Lista()
     {
