@@ -27,11 +27,28 @@ public:
     Lista()
     {
         cab = 0;
+        std::cout << "Constructor por omisión\n";
     }
+    
+    Lista(const Lista& otra)
+    {
+        std::cout << "Constructor de copia\n";
+    }
+    
+    
     ~Lista()
     {
-        // pendiente: liberar cada uno de los nodos
-        // tarea: libear cada nodo con delete
+        this->libera();
+    }
+    
+    void libera()
+    {
+        Nodo<TipoGen> *aux = cab;
+        while (aux != 0)    {
+            aux = aux->sig;
+            delete cab;
+            cab = aux;
+        }
     }
     
     void insertaInicio(TipoGen dato)
