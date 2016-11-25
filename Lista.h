@@ -33,6 +33,11 @@ public:
     Lista(const Lista& otra)
     {
         std::cout << "Constructor de copia\n";
+        this->copiar(otra);
+    }
+    
+    void copiar(const Lista& otra)
+    {
         this->cab = 0;
         Nodo<TipoGen> *aux = otra.cab;
         Nodo<TipoGen> *ult = 0;
@@ -49,9 +54,42 @@ public:
             aux = aux->sig;
         }
     }
+
+    Lista operator+(const Lista& otra)
+    {
+        // concatenar esta lista con otra y regresar una nueva
+        Lista resultado;
+        
+        // agregar la información de esta lista al resultado
+        resultado.copiar(*this);
+        if (resultado.cab == 0) {
+            resultado.copiar(otra);
+        }
+        else    {
+            // agregar la información de otra lista al resultado
+            Nodo<TipoGen> *ult = resultado.cab;
+            while (ult->sig != 0)   {
+                ult = ult->sig;
+            }
+            Nodo<TipoGen> *aux = otra.cab;
+            while (aux != 0)    {                
+                Nodo<TipoGen> *nuevo = new Nodo<TipoGen>(aux->dato);
+                ult->sig = nuevo;
+                ult = nuevo;
+                aux = aux->sig;
+            }
+        }
+        return resultado;
+    }
     
     // TAREA: sobrecargar el operador de asignación (operator=)
-    
+    const Lista& operator=(const Lista& otra)
+    {
+        this->libera();
+        this->copiar(otra);
+        return otra;
+    }
+
     ~Lista()
     {
         this->libera();
@@ -76,9 +114,10 @@ public:
     {
         Nodo<TipoGen> *aux = cab;
         while (aux != 0)    {
-            std::cout << aux->dato << std::endl;
+            std::cout << aux->dato << "->";
             aux = aux->sig;
         }
+        std::cout << std::endl;
     }
 private:
     Nodo<TipoGen> *cab;
